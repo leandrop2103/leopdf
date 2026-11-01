@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/leandrop2103/pdfcraft/releases"><img src="https://img.shields.io/badge/Versão-0.0.11-blue.svg?style=for-the-badge" alt="Versão Atual"></a>
+  <a href="https://github.com/leandrop2103/leopdf/releases"><img src="https://img.shields.io/badge/Versão-0.0.11-blue.svg?style=for-the-badge" alt="Versão Atual"></a>
   <a href="LICENSE-MIT"><img src="https://img.shields.io/badge/Licença-MIT-green.svg?style=for-the-badge" alt="Licença MIT"></a>
   <img src="https://img.shields.io/badge/Plataforma-Android%20%7C%20Windows%20%7C%20Linux%20%7C%20macOS-orange.svg?style=for-the-badge" alt="Plataformas">
   <img src="https://img.shields.io/badge/Linguagens-Kotlin%20%7C%20Rust-purple.svg?style=for-the-badge" alt="Linguagens">
@@ -68,7 +68,7 @@ O projeto conta também com uma suíte de ferramentas de desktop multiplataforma
 ## 🚀 Instalação
 
 ### 📱 Android
-1. Baixe o instalador mais recente: **[`LeoPDF-v0.0.11.apk`](https://github.com/leandrop2103/pdfcraft/releases)**.
+1. Baixe o instalador mais recente: **[`LeoPDF-v0.0.11.apk`](https://github.com/leandrop2103/leopdf/releases)**.
 2. No seu aparelho Android, abra o arquivo APK baixado.
 3. Se solicitado, autorize a instalação de fontes desconhecidas e confirme.
 4. Abra o **LeoPDF** e aproveite seus documentos!
@@ -77,8 +77,8 @@ O projeto conta também com uma suíte de ferramentas de desktop multiplataforma
 Requisitos: Rust 1.80+ instalado.
 ```bash
 # Clone o repositório
-git clone https://github.com/leandrop2103/pdfcraft.git
-cd pdfcraft
+git clone https://github.com/leandrop2103/leopdf.git
+cd leopdf
 
 # Execute a versão desktop
 cargo run --release -p pdfcraft-gui
@@ -93,7 +93,7 @@ O desenvolvimento do **LeoPDF** foi realizado em conjunto por:
 | Colaborador | Função & Contribuições |
 |---|---|
 | **[Leandro](https://github.com/leandrop2103)** | **Idealizador, Arquiteto de Software & Engenharia de Produto**<br>Definição de funcionalidades, design de interface, testes em dispositivos reais, usabilidade, especificações dos modos de leitura e direção técnica do projeto. |
-| **[Antigravity](https://github.com/leandrop2103/pdfcraft)** *(Google DeepMind)* | **Agente de Engenharia & Co-desenvolvedor de Software**<br>Implementação do leitor Android (Kotlin + Rust JNI), matrizes de cores para os modos Kindle E-Ink e Noturno Adobe, algoritmo de recorte inteligente 3mm, persistência `DocumentStorage`, controle de concorrência e mitigação de falhas. |
+| **[Antigravity](https://github.com/leandrop2103/leopdf)** *(Google DeepMind)* | **Agente de Engenharia & Co-desenvolvedor de Software**<br>Implementação do leitor Android (Kotlin + Rust JNI), matrizes de cores para os modos Kindle E-Ink e Noturno Adobe, algoritmo de recorte inteligente 3mm, persistência `DocumentStorage`, controle de concorrência e mitigação de falhas. |
 
 ---
 
