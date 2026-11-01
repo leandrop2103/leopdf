@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PdfCraft Reader</string>
+    <string name="app_name">LeoPDF</string>
     <string name="recents_title">Documentos Recentes</string>
     <string name="open_pdf">Abrir PDF</string>
     <string name="no_recent_files">Nenhum documento recente</string>

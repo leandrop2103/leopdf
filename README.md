@@ -1,17 +1,17 @@
-# PdfCraft 📄✨
+# LeoPDF 📄✨
 
 <p align="center">
-  <img src="assets/app-icon/hicolor/256x256/apps/ai.storyteller.pdfcraft.png" width="120" height="120" alt="PdfCraft Icon">
+  <img src="assets/app-icon/hicolor/256x256/apps/ai.storyteller.pdfcraft.png" width="120" height="120" alt="LeoPDF Icon">
 </p>
 
 <p align="center">
-  <b>O leitor e organizador de PDF moderno, rápido e imersivo.</b><br>
-  Desenvolvido nativamente em <b>Kotlin</b> para Android e <b>Rust</b> para Desktop.<br>
+  <b>O leitor e organizador de PDF moderno, rápido e imersivo para Android e Desktop.</b><br>
+  Desenvolvido nativamente em <b>Kotlin</b> para dispositivos móveis e motor de alta fidelidade em <b>Rust</b>.<br>
   Sem anúncios · Sem rastreamento · 100% Offline e Privado
 </p>
 
 <p align="center">
-  <a href="https://github.com/leandrop2103/pdfcraft/releases"><img src="https://img.shields.io/badge/Versão-0.0.10-blue.svg?style=for-the-badge" alt="Versão Atual"></a>
+  <a href="https://github.com/leandrop2103/pdfcraft/releases"><img src="https://img.shields.io/badge/Versão-0.0.11-blue.svg?style=for-the-badge" alt="Versão Atual"></a>
   <a href="LICENSE-MIT"><img src="https://img.shields.io/badge/Licença-MIT-green.svg?style=for-the-badge" alt="Licença MIT"></a>
   <img src="https://img.shields.io/badge/Plataforma-Android%20%7C%20Windows%20%7C%20Linux%20%7C%20macOS-orange.svg?style=for-the-badge" alt="Plataformas">
   <img src="https://img.shields.io/badge/Linguagens-Kotlin%20%7C%20Rust-purple.svg?style=for-the-badge" alt="Linguagens">
@@ -19,24 +19,24 @@
 
 ---
 
-## 📱 Destaques do PdfCraft para Android
+## 📱 Destaques do LeoPDF para Android
 
-O **PdfCraft Android** é um leitor completo projetado para oferecer a melhor experiência de leitura no smartphone, trazendo recursos avançados que rivalizam e superam outros leitores tradicionais:
+O **LeoPDF** foi concebido e arquitetado para ser o leitor definitivo no smartphone, reunindo os recursos mais pedidos em um app leve e livre de distrações:
 
 ### 🌙 Modo Noturno Adobe (OLED Pure Black)
-Inversão de luminância que transforma o fundo do PDF em **preto OLED puro (`#000000`)** e os textos escuros em **branco cristalino (`#FFFFFF`)**. Elimina a fadiga visual à noite e proporciona máxima economia de bateria em telas AMOLED. O botão de acesso rápido na barra permite alternar entre dia e noite com um único toque.
+Inversão de luminância precisa que transforma as páginas claras do documento em **preto OLED puro (`#000000`)** e os textos em **branco cristalino (`#FFFFFF`)**. Elimina o cansaço visual em ambientes escuros e poupa energia em telas AMOLED. O botão no cabeçalho alterna instantaneamente entre o modo claro e noturno com 1 toque.
 
 ### 📖 Modo Leitura Kindle E-Ink (E-Paper)
-Transforme o documento na experiência de leitura de um **Kindle Paperwhite**. Aplica uma desaturação monocromática completa com contraste expandido sobre fundo texturizado em tom de papel suave (`#F4F4F0`), reduzindo reflexos e brilhos excessivos.
+Transforme o documento na experiência aconchegante de um **Kindle Paperwhite**. Aplica desaturação monocromática completa com contraste expandido sobre fundo texturizado em tom de papel suave (`#F4F4F0`), reduzindo reflexos incômodos.
 
 ### ✂️ Recorte Inteligente de Margens (Smart Crop 3mm)
-Varredura matemática de pixels em tempo real que detecta o conteúdo real (tintas e textos) em cada página e apara bordas brancas vazias desnecessárias, preservando um respiro confortável de 3mm em todas as direções para maximizar a área útil da tela.
+Varredura sub-milissegundo de pixels que detecta o conteúdo real (tintas e textos) em cada página e apara bordas brancas vazias desnecessárias, preservando um respiro confortável de 3mm em todas as direções para maximizar a área útil da tela.
 
 ### 🔍 Zoom Adaptativo de Toque Duplo
-Dois toques rápidos na tela ajustam o zoom e enquadram os parágrafos exatamente na largura do display. Suporte completo a gestos multitoque (pinch-to-zoom) e pan com inércia física natural.
+Dois toques rápidos na tela enquadram o texto exatamente na largura do display. Conta com suporte fluido a multitoque (pinch-to-zoom) e rolagem com amortecimento inercial.
 
 ### 📜 Rolagem Contínua Vertical
-Leitura fluida sem cortes entre as páginas, com renderização assíncrona, paginação contínua e gerenciamento dinâmico de memória para abrir arquivos grandes instantaneamente.
+Leitura fluida sem cortes bruscos entre as páginas, com renderização assíncrona, paginação contínua e gerenciamento dinâmico de memória para abrir arquivos grandes instantaneamente.
 
 ### 🔊 Leitura em Voz Alta (Text-to-Speech / TTS)
 Ouça seus PDFs como audiobooks! O app sintetiza e lê o conteúdo textual em voz alta com player flutuante integrado.
@@ -51,13 +51,13 @@ Camada de anotações com traço vetorial de tinta suave, seleção de cores (Az
 Grade visual em mosaico de 3 colunas para navegação rápida e visualização instantânea de qualquer página do documento.
 
 ### 💾 Armazenamento Local Persistente Offline (`DocumentStorage`)
-Quando você abre arquivos da nuvem (como Microsoft OneDrive, Google Drive ou anexos de mensagens), o app armazena uma cópia segura e privada em armazenamento local interno. Isso previne erros de expiração de permissão e garante que você sempre consiga reabrir seus documentos recentes mesmo offline.
+Ao abrir arquivos vindos de provedores de nuvem (como Microsoft OneDrive, Google Drive ou anexos de mensagens), o app armazena uma cópia segura e privada em armazenamento local interno. Isso previne erros de expiração de permissão e garante que você sempre consiga reabrir seus documentos recentes mesmo offline.
 
 ---
 
 ## 🖥️ Versão Desktop (Rust Workbench)
 
-O PdfCraft também conta com uma versão de desktop multiplataforma desenvolvida em **Rust**:
+O projeto conta também com uma suíte de ferramentas de desktop multiplataforma desenvolvida em **Rust**:
 - **Motor nativo e seguro:** Rápido, leve e com foco em fidelidade visual (ISO 32000-2).
 - **Sem telemetria e sem contas:** Nenhum dado sai do seu computador.
 - **Ferramentas de produtividade:** Leitura, reorganização de páginas, mesclagem (combine), divisão (split), anotações e proteção.
@@ -68,10 +68,10 @@ O PdfCraft também conta com uma versão de desktop multiplataforma desenvolvida
 ## 🚀 Instalação
 
 ### 📱 Android
-1. Baixe o instalador mais recente: **[`PdfCraft-v0.0.10.apk`](https://github.com/leandrop2103/pdfcraft/releases)**.
+1. Baixe o instalador mais recente: **[`LeoPDF-v0.0.11.apk`](https://github.com/leandrop2103/pdfcraft/releases)**.
 2. No seu aparelho Android, abra o arquivo APK baixado.
 3. Se solicitado, autorize a instalação de fontes desconhecidas e confirme.
-4. Abra o PdfCraft e aproveite seus documentos!
+4. Abra o **LeoPDF** e aproveite seus documentos!
 
 ### 💻 Compilação Desktop (Rust)
 Requisitos: Rust 1.80+ instalado.
@@ -88,7 +88,7 @@ cargo run --release -p pdfcraft-gui
 
 ## 👥 Colaboradores & Autoria
 
-O desenvolvimento deste aplicativo foi realizado em conjunto por:
+O desenvolvimento do **LeoPDF** foi realizado em conjunto por:
 
 | Colaborador | Função & Contribuições |
 |---|---|
@@ -104,7 +104,7 @@ Este projeto é software livre e de código aberto disponibilizado sob a **[Lice
 ```
 MIT License
 
-Copyright (c) 2026 Leandro and Contribuidores do PdfCraft
+Copyright (c) 2026 Leandro and Contribuidores do LeoPDF
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
