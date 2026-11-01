@@ -10,6 +10,8 @@ plan/
 # A craft-fonts checkout used as the optional CRAFT_FONTS_DIR build input (CI and releases put it here).
 /craft-fonts
 
+.claude/
+
 # Android build outputs and caches
 .gradle/
 **/build/
