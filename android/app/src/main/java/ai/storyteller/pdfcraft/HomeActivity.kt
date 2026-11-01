@@ -76,7 +76,7 @@ class HomeActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         adapter = RecentDocumentsAdapter(
             onItemClick = { doc ->
-                openReader(Uri.parse(doc.uriString), doc.title, doc.lastReadPage)
+                openReader(Uri.parse(doc.uriString), doc.title, doc.lastReadPage, doc.scrollOffsetPx)
             },
             onDeleteClick = { doc ->
                 recentManager.removeDocument(doc.uriString)
@@ -132,13 +132,14 @@ class HomeActivity : AppCompatActivity() {
         val title = queryDocumentName(uri)
         val existingDoc = recentManager.getDocument(uri.toString())
         val startPage = existingDoc?.lastReadPage ?: 0
+        val scrollOffset = existingDoc?.scrollOffsetPx ?: 0
 
         // Save a permanent offline copy asynchronously so cloud permission expiry never revokes reading
         lifecycleScope.launch(Dispatchers.IO) {
             DocumentStorage.savePdfLocally(this@HomeActivity, uri)
         }
 
-        openReader(uri, title, startPage)
+        openReader(uri, title, startPage, scrollOffset)
     }
 
     private fun queryDocumentName(uri: Uri): String {
@@ -156,7 +157,7 @@ class HomeActivity : AppCompatActivity() {
         return name ?: uri.lastPathSegment ?: "Documento.pdf"
     }
 
-    private fun openReader(uri: Uri, title: String, startPage: Int = 0) {
+    private fun openReader(uri: Uri, title: String, startPage: Int = 0, scrollOffset: Int = 0) {
         val localFile = DocumentStorage.getLocalFile(this, uri.toString())
 
         val intent = Intent(this, ReaderActivity::class.java).apply {
@@ -171,6 +172,7 @@ class HomeActivity : AppCompatActivity() {
             }
             putExtra(ReaderActivity.EXTRA_TITLE, title)
             putExtra(ReaderActivity.EXTRA_START_PAGE, startPage)
+            putExtra(ReaderActivity.EXTRA_SCROLL_OFFSET, scrollOffset)
             putExtra(ReaderActivity.EXTRA_ORIGINAL_URI, uri.toString())
         }
 

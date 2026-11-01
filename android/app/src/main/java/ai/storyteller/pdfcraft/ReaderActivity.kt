@@ -1,6 +1,7 @@
 package ai.storyteller.pdfcraft
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -23,6 +24,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.content.FileProvider
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -32,6 +34,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ai.storyteller.pdfcraft.adapter.ContinuousPdfAdapter
 import ai.storyteller.pdfcraft.adapter.ThumbnailGridAdapter
+import ai.storyteller.pdfcraft.data.DocumentStorage
 import ai.storyteller.pdfcraft.data.RecentDocumentManager
 import ai.storyteller.pdfcraft.engine.PdfEngine
 import ai.storyteller.pdfcraft.view.DrawingCanvasView
@@ -53,6 +56,7 @@ class ReaderActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var trackingUriString: String = ""
     private var documentTitle: String = "Documento"
     private var currentPageIndex: Int = 0
+    private var currentScrollOffsetPx: Int = 0
     private var totalPages: Int = 0
 
     private var currentMode = PdfReadingView.ReadingMode.NORMAL
@@ -165,10 +169,13 @@ class ReaderActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         trackingUriString = originalUri ?: documentUri.toString()
         documentTitle = intent.getStringExtra(EXTRA_TITLE) ?: "Documento.pdf"
         currentPageIndex = intent.getIntExtra(EXTRA_START_PAGE, 0)
+        currentScrollOffsetPx = intent.getIntExtra(EXTRA_SCROLL_OFFSET, 0)
 
-        // Restore saved reading mode
+        // Restore saved reading mode and exact scroll position
         val existing = recentManager.getDocument(trackingUriString)
         existing?.let {
+            currentPageIndex = it.lastReadPage
+            currentScrollOffsetPx = it.scrollOffsetPx
             try {
                 currentMode = PdfReadingView.ReadingMode.valueOf(it.readingMode)
             } catch (_: Exception) {}
@@ -410,6 +417,7 @@ class ReaderActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             if (isAutoScrolling) "⏸️ Parar Rolagem Automática" else "▶️ Rolagem Automática (Hands-Free)",
             bookmarkTitle,
             "📑 Ver Todos os Marcadores (${recentManager.getBookmarks(trackingUriString).size})",
+            "📤 Compartilhar Documento",
             orientationStatus,
             screenStatus
         )
@@ -428,8 +436,9 @@ class ReaderActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     }
                     6 -> toggleCurrentPageBookmark()
                     7 -> showBookmarksListDialog()
-                    8 -> cycleScreenOrientation()
-                    9 -> toggleKeepScreenOn()
+                    8 -> shareDocument()
+                    9 -> cycleScreenOrientation()
+                    10 -> toggleKeepScreenOn()
                 }
             }
             .setNegativeButton("Fechar", null)
@@ -692,7 +701,7 @@ class ReaderActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
                 rvContinuousPdf.adapter = continuousAdapter
 
-                layoutManager.scrollToPositionWithOffset(currentPageIndex, 0)
+                layoutManager.scrollToPositionWithOffset(currentPageIndex, currentScrollOffsetPx)
                 updateUiControls()
 
                 loadingIndicator.visibility = View.GONE
@@ -923,14 +932,44 @@ class ReaderActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
     }
 
+    private fun shareDocument() {
+        try {
+            val localFile = DocumentStorage.getLocalFile(this, trackingUriString)
+                ?: DocumentStorage.savePdfLocally(this, documentUri)
+
+            if (localFile != null && localFile.exists() && localFile.length() > 0L) {
+                val authority = "${applicationContext.packageName}.fileprovider"
+                val shareUri = FileProvider.getUriForFile(this, authority, localFile)
+
+                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                    type = "application/pdf"
+                    putExtra(Intent.EXTRA_STREAM, shareUri)
+                    putExtra(Intent.EXTRA_SUBJECT, documentTitle)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+                startActivity(Intent.createChooser(shareIntent, "Compartilhar $documentTitle"))
+            } else {
+                Toast.makeText(this, "Não foi possível preparar o documento para envio.", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this, "Erro ao compartilhar arquivo: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun saveCurrentProgress() {
         if (totalPages > 0) {
+            val firstPos = layoutManager.findFirstVisibleItemPosition()
+            val firstView = if (firstPos != RecyclerView.NO_POSITION) layoutManager.findViewByPosition(firstPos) else null
+            val offset = firstView?.top ?: 0
+            val page = if (firstPos != RecyclerView.NO_POSITION) firstPos else currentPageIndex
+
             recentManager.saveOrUpdate(
                 uriString = trackingUriString,
                 title = documentTitle,
                 pageCount = totalPages,
-                lastReadPage = currentPageIndex,
-                readingMode = currentMode.name
+                lastReadPage = page,
+                readingMode = currentMode.name,
+                scrollOffsetPx = offset
             )
         }
     }
@@ -958,6 +997,7 @@ class ReaderActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     companion object {
         const val EXTRA_TITLE = "extra_document_title"
         const val EXTRA_START_PAGE = "extra_start_page"
+        const val EXTRA_SCROLL_OFFSET = "extra_scroll_offset"
         const val EXTRA_FILE_PATH = "extra_file_path"
         const val EXTRA_ORIGINAL_URI = "extra_original_uri"
     }

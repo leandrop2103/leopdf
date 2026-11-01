@@ -12,7 +12,8 @@ data class RecentDocument(
     var lastOpenedTimestamp: Long,
     val fileSizeBytes: Long = 0L,
     var readingMode: String = "NORMAL",
-    var bookmarks: MutableList<Int>? = mutableListOf()
+    var bookmarks: MutableList<Int>? = mutableListOf(),
+    var scrollOffsetPx: Int = 0
 ) {
     fun getSafeBookmarks(): MutableList<Int> {
         if (bookmarks == null) {

@@ -31,7 +31,8 @@ class RecentDocumentManager(context: Context) {
         pageCount: Int,
         lastReadPage: Int,
         fileSizeBytes: Long = 0L,
-        readingMode: String = "NORMAL"
+        readingMode: String = "NORMAL",
+        scrollOffsetPx: Int = 0
     ) {
         val list = getRecentDocuments().toMutableList()
         val existingIndex = list.indexOfFirst { it.uriString == uriString }
@@ -41,7 +42,8 @@ class RecentDocumentManager(context: Context) {
             existing.copy(
                 lastReadPage = lastReadPage.coerceIn(0, (pageCount - 1).coerceAtLeast(0)),
                 lastOpenedTimestamp = System.currentTimeMillis(),
-                readingMode = readingMode
+                readingMode = readingMode,
+                scrollOffsetPx = scrollOffsetPx
             )
         } else {
             RecentDocument(
@@ -51,7 +53,8 @@ class RecentDocumentManager(context: Context) {
                 lastReadPage = lastReadPage.coerceIn(0, (pageCount - 1).coerceAtLeast(0)),
                 lastOpenedTimestamp = System.currentTimeMillis(),
                 fileSizeBytes = fileSizeBytes,
-                readingMode = readingMode
+                readingMode = readingMode,
+                scrollOffsetPx = scrollOffsetPx
             )
         }
 
@@ -65,7 +68,7 @@ class RecentDocumentManager(context: Context) {
         prefs.edit().putString(KEY_RECENTS, gson.toJson(trimmed)).apply()
     }
 
-    fun updateProgress(uriString: String, lastReadPage: Int, readingMode: String? = null) {
+    fun updateProgress(uriString: String, lastReadPage: Int, readingMode: String? = null, scrollOffsetPx: Int? = null) {
         val list = getRecentDocuments().toMutableList()
         val index = list.indexOfFirst { it.uriString == uriString }
         if (index >= 0) {
@@ -74,6 +77,9 @@ class RecentDocumentManager(context: Context) {
             doc.lastOpenedTimestamp = System.currentTimeMillis()
             if (readingMode != null) {
                 doc.readingMode = readingMode
+            }
+            if (scrollOffsetPx != null) {
+                doc.scrollOffsetPx = scrollOffsetPx
             }
             list.sortByDescending { it.lastOpenedTimestamp }
             prefs.edit().putString(KEY_RECENTS, gson.toJson(list)).apply()

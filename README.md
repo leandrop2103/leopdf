@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/leandrop2103/leopdf/releases"><img src="https://img.shields.io/badge/Versão-0.0.11-blue.svg?style=for-the-badge" alt="Versão Atual"></a>
+  <a href="https://github.com/leandrop2103/leopdf/releases"><img src="https://img.shields.io/badge/Versão-0.0.12-blue.svg?style=for-the-badge" alt="Versão Atual"></a>
   <a href="LICENSE-MIT"><img src="https://img.shields.io/badge/Licença-MIT-green.svg?style=for-the-badge" alt="Licença MIT"></a>
   <img src="https://img.shields.io/badge/Plataforma-Android%20%7C%20Windows%20%7C%20Linux%20%7C%20macOS-orange.svg?style=for-the-badge" alt="Plataformas">
   <img src="https://img.shields.io/badge/Linguagens-Kotlin%20%7C%20Rust-purple.svg?style=for-the-badge" alt="Linguagens">
@@ -50,6 +50,12 @@ Camada de anotações com traço vetorial de tinta suave, seleção de cores (Az
 ### 🖼️ Mosaico de Miniaturas de Páginas
 Grade visual em mosaico de 3 colunas para navegação rápida e visualização instantânea de qualquer página do documento.
 
+### 📤 Compartilhamento Direto de PDF
+Envie cópias do documento via WhatsApp, Telegram, E-mail ou salve em qualquer diretório com o seletor nativo do Android em 1 clique.
+
+### 🎯 Retorno à Posição Exata de Leitura (Pixel-Perfect Offset)
+O LeoPDF memoriza não apenas o número da página, mas o deslocamento vertical exato em pixels da tela, restaurando com perfeição a linha em que você parou ao reabrir.
+
 ### 💾 Armazenamento Local Persistente Offline (`DocumentStorage`)
 Ao abrir arquivos vindos de provedores de nuvem (como Microsoft OneDrive, Google Drive ou anexos de mensagens), o app armazena uma cópia segura e privada em armazenamento local interno. Isso previne erros de expiração de permissão e garante que você sempre consiga reabrir seus documentos recentes mesmo offline.
 
@@ -68,7 +74,7 @@ O projeto conta também com uma suíte de ferramentas de desktop multiplataforma
 ## 🚀 Instalação
 
 ### 📱 Android
-1. Baixe o instalador mais recente: **[`LeoPDF-v0.0.11.apk`](https://github.com/leandrop2103/leopdf/releases)**.
+1. Baixe o instalador mais recente: **[`LeoPDF-v0.0.12.apk`](https://github.com/leandrop2103/leopdf/releases)**.
 2. No seu aparelho Android, abra o arquivo APK baixado.
 3. Se solicitado, autorize a instalação de fontes desconhecidas e confirme.
 4. Abra o **LeoPDF** e aproveite seus documentos!

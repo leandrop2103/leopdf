@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Document Silhouette Shadow / Back Depth -->
+    <path
+        android:fillColor="#1D4ED8"
+        android:pathData="M33,25 L61,25 L77,41 L77,87 L33,87 Z" />
+
+    <!-- Main Document Page -->
+    <path
+        android:fillColor="#3B82F6"
+        android:pathData="M32,24 L60,24 L76,40 L76,86 L32,86 Z" />
+
+    <!-- Gold Folded Flap Corner -->
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M60,24 L60,40 L76,40 Z" />
+
+    <!-- Inner Fold Shadow -->
+    <path
+        android:fillColor="#D97706"
+        android:pathData="M60,39 L75,39 L60,25 Z" />
+
+    <!-- Decorative PDF Document Accent Line -->
+    <path
+        android:fillColor="#93C5FD"
+        android:pathData="M49,46 L68,46 A2,2 0 0,1 70,48 A2,2 0 0,1 68,50 L49,50 A2,2 0 0,1 47,48 A2,2 0 0,1 49,46 Z" />
+
+    <!-- Stylized "L" Monogram for LeoPDF (Bold, Smooth) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M42,42 L48,42 L48,68 L68,68 L68,74 L42,74 Z" />
+
+    <!-- Golden Reading Spark Emblem Dot -->
+    <path
+        android:fillColor="#FBBF24"
+        android:pathData="M68,56 A3.5,3.5 0 1,0 68,63 A3.5,3.5 0 1,0 68,56 Z" />
+
+</vector>
