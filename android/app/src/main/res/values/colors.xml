@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand / Theme -->
+    <color name="primary">#0F172A</color>
+    <color name="primary_variant">#020617</color>
+    <color name="secondary">#2563EB</color>
+    <color name="accent">#2563EB</color>
+    <color name="accent_light">#3B82F6</color>
+    <color name="accent_subtle">#EFF6FF</color>
+
+    <!-- General UI -->
+    <color name="background_light">#F8FAFC</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="divider">#E2E8F0</color>
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="text_tertiary">#94A3B8</color>
+    <color name="on_primary">#FFFFFF</color>
+
+    <!-- Reading Modes -->
+    <color name="reading_normal_bg">#F1F5F9</color>
+    <color name="reading_night_bg">#121212</color>
+    <color name="reading_sepia_bg">#F5EAD4</color>
+    <color name="reading_sepia_card">#FCF6EB</color>
+    <color name="reading_sepia_tint">#EAD8B7</color>
+
+    <!-- Progress -->
+    <color name="progress_track">#E2E8F0</color>
+    <color name="progress_fill">#2563EB</color>
+</resources>

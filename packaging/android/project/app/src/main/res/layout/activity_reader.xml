@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/readerRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/reading_normal_bg">
+
+    <!-- Continuous Vertical Scrolling Zoomable Document View -->
+    <ai.storyteller.pdfcraft.view.ZoomableRecyclerView
+        android:id="@+id/rvContinuousPdf"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="96dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Drawing & Signature Canvas Overlay -->
+    <ai.storyteller.pdfcraft.view.DrawingCanvasView
+        android:id="@+id/drawingCanvas"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Center Loading Indicator -->
+    <ProgressBar
+        android:id="@+id/loadingIndicator"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Top App Bar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/readerToolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#E60F172A"
+        android:elevation="10dp"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:navigationIconTint="@color/on_primary"
+        app:title="Documento.pdf"
+        app:titleTextColor="@color/on_primary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingEnd="4dp">
+
+            <!-- Button: Enter Immersion Reading Mode -->
+            <Button
+                android:id="@+id/btnEnterReadingMode"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginEnd="6dp"
+                android:text="Leitura"
+                android:textSize="11sp"
+                android:textColor="@color/on_primary"
+                android:paddingHorizontal="10dp"
+                app:icon="@drawable/ic_book"
+                app:iconTint="@color/on_primary"
+                app:iconSize="14dp"
+                app:backgroundTint="@color/accent"
+                style="@style/Widget.Material3.Button.TonalButton" />
+
+            <!-- Quick Night Mode / Day Mode 1-Tap Toggle (Lua / Sol) -->
+            <ImageButton
+                android:id="@+id/btnQuickNightMode"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_dark_mode"
+                android:contentDescription="Alternar Modo Noturno"
+                app:tint="@color/on_primary" />
+
+            <!-- Dropdown Menu / More Options (3 Pontinhos) -->
+            <ImageButton
+                android:id="@+id/btnMoreOptions"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_more_vert"
+                android:contentDescription="Mais opções de leitura"
+                app:tint="@color/on_primary" />
+
+        </LinearLayout>
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <!-- Floating Discreet Page Pill (Bottom Right) -->
+    <TextView
+        android:id="@+id/tvFloatingPageBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="#CC0F172A"
+        android:textColor="@color/on_primary"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="6dp"
+        android:elevation="6dp"
+        android:text="1 / 1"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Brightness Overlay Indicator -->
+    <TextView
+        android:id="@+id/tvBrightnessBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#E60F172A"
+        android:textColor="@color/on_primary"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="10dp"
+        android:elevation="14dp"
+        android:text="☀️ 80%"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Fast Scroller Vertical Bar on the Right Margin -->
+    <FrameLayout
+        android:id="@+id/fastScrollerContainer"
+        android:layout_width="36dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginBottom="90dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <View
+            android:id="@+id/vFastScrollTrack"
+            android:layout_width="3dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_marginEnd="4dp"
+            android:background="#3364748B" />
+
+        <View
+            android:id="@+id/vFastScrollThumb"
+            android:layout_width="8dp"
+            android:layout_height="48dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="2dp"
+            android:background="@color/accent" />
+
+    </FrameLayout>
+
+    <!-- Fast Scroll Page Bubble -->
+    <TextView
+        android:id="@+id/tvFastScrollBubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="42dp"
+        android:background="#EE0F172A"
+        android:textColor="@color/on_primary"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="8dp"
+        android:elevation="16dp"
+        android:text="Pág. 1 de 10"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/fastScrollerContainer" />
+
+    <!-- Floating Drawing & Annotation Toolbar -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardDrawingControls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:cardCornerRadius="22dp"
+        app:cardElevation="14dp"
+        app:cardBackgroundColor="#F20F172A"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/readerToolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp">
+
+            <View
+                android:id="@+id/btnDrawColorBlue"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:background="#2563EB"
+                android:layout_marginEnd="10dp" />
+
+            <View
+                android:id="@+id/btnDrawColorBlack"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:background="#000000"
+                android:layout_marginEnd="10dp" />
+
+            <View
+                android:id="@+id/btnDrawColorRed"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:background="#EF4444"
+                android:layout_marginEnd="12dp" />
+
+            <ImageButton
+                android:id="@+id/btnDrawUndo"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_undo"
+                android:contentDescription="Desfazer traço"
+                app:tint="@color/on_primary" />
+
+            <ImageButton
+                android:id="@+id/btnDrawClear"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_delete"
+                android:contentDescription="Limpar tudo"
+                app:tint="@color/on_primary" />
+
+            <ImageButton
+                android:id="@+id/btnDrawFinish"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_check"
+                android:contentDescription="Concluir desenho"
+                app:tint="#10B981" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Floating TTS (Leitura em Voz Alta) Card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardTtsControls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="14dp"
+        app:cardBackgroundColor="#F20F172A"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/bottomControlCard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="14dp">
+
+            <TextView
+                android:id="@+id/tvTtsStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🔊 Voz Ativa"
+                android:textColor="@color/on_primary"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp" />
+
+            <ImageButton
+                android:id="@+id/btnTtsStop"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_delete"
+                android:contentDescription="Parar leitura em voz alta"
+                app:tint="#EF4444" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Floating Auto-Scroll Controls Card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardAutoScrollControls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="14dp"
+        app:cardBackgroundColor="#F20F172A"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/bottomControlCard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp">
+
+            <ImageButton
+                android:id="@+id/btnAutoScrollSlower"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_chevron_left"
+                android:contentDescription="Diminuir velocidade"
+                app:tint="@color/on_primary" />
+
+            <TextView
+                android:id="@+id/tvAutoScrollSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:textColor="@color/on_primary"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:text="1.0x" />
+
+            <ImageButton
+                android:id="@+id/btnAutoScrollFaster"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_chevron_right"
+                android:contentDescription="Aumentar velocidade"
+                app:tint="@color/on_primary" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:background="#44FFFFFF"
+                android:layout_marginHorizontal="6dp" />
+
+            <ImageButton
+                android:id="@+id/btnAutoScrollPauseToggle"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_pause"
+                android:contentDescription="Pausar rolagem"
+                app:tint="@color/on_primary" />
+
+            <ImageButton
+                android:id="@+id/btnAutoScrollStop"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_delete"
+                android:contentDescription="Fechar rolagem automática"
+                app:tint="#EF4444" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Bottom Controls Bar -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/bottomControlCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="24dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="12dp"
+        app:cardBackgroundColor="#F2FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="10dp">
+
+            <!-- Page Seek Slider -->
+            <SeekBar
+                android:id="@+id/pageSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="1"
+                android:progress="0"
+                android:progressTint="@color/accent"
+                android:thumbTint="@color/accent" />
+
+            <!-- Navigation Controls & Page Jump -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="2dp">
+
+                <ImageButton
+                    android:id="@+id/btnPrevPage"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_chevron_left"
+                    android:contentDescription="@string/previous_page" />
+
+                <!-- Page Button (Clickable to jump to page) -->
+                <TextView
+                    android:id="@+id/tvPageIndicator"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Pág. 1 de 1"
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingVertical="8dp" />
+
+                <ImageButton
+                    android:id="@+id/btnNextPage"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_chevron_right"
+                    android:contentDescription="@string/next_page" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Full-Screen Thumbnail Grid Overlay (Mosaico de Páginas) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardThumbnailOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="20dp"
+        app:cardCornerRadius="0dp"
+        app:cardBackgroundColor="#F8FAFC"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Overlay Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="#0F172A"
+                android:paddingHorizontal="16dp">
+
+                <TextView
+                    android:id="@+id/tvThumbnailTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Mosaico de Páginas"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btnThumbnailClose"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_delete"
+                    android:contentDescription="Fechar mosaico"
+                    app:tint="#FFFFFF" />
+
+            </LinearLayout>
+
+            <!-- 3-Column Thumbnails RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvThumbnails"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                android:padding="8dp" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

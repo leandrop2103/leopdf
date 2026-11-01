@@ -1,0 +1,26 @@
+[package]
+name = "pdfcraft-android"
+description = "PdfCraft for Android: high-performance core engine and rendering library"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[lints.rust]
+unsafe_code = "allow"
+
+[dependencies]
+pdfcraft-render = { workspace = true }
+pdfcraft-cos = { workspace = true }
+thiserror = { workspace = true }
+log = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+bytemuck = "1.25"
+jni = { version = "0.21", default-features = false }
+
+[dev-dependencies]
+pdfcraft-testkit = { workspace = true }

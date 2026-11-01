@@ -13,7 +13,7 @@ use std::sync::{Arc, OnceLock};
 
 use egui::FontData;
 
-#[cfg(all(unix, not(target_os = "macos"), not(target_arch = "wasm32")))]
+#[cfg(all(unix, not(target_os = "macos"), not(target_os = "android"), not(target_arch = "wasm32")))]
 mod fontconfig;
 
 /// Larger files are not read: a font path is still untrusted input.
@@ -176,6 +176,8 @@ fn devanagari_candidates() -> Vec<PathBuf> {
         ["Nirmala.ttf", "NirmalaB.ttf", "mangal.ttf", "aparaj.ttf", "utsah.ttf"].iter().map(|f| windows_fonts().join(f)).collect()
     } else if cfg!(target_os = "macos") {
         macos_devanagari_candidates()
+    } else if cfg!(target_os = "android") {
+        android_fonts(&["NotoSansDevanagari-Regular.ttf", "NotoSansDevanagariUI-Regular.ttf"])
     } else {
         unix_fonts(&[
             "google-noto/NotoSansDevanagariUI-Regular.ttf",
@@ -210,6 +212,8 @@ fn telugu_candidates() -> Vec<PathBuf> {
         .iter()
         .map(PathBuf::from)
         .collect()
+    } else if cfg!(target_os = "android") {
+        android_fonts(&["NotoSansTelugu-Regular.ttf", "NotoSansTeluguUI-Regular.ttf"])
     } else {
         unix_fonts(&[
             "google-noto/NotoSansTeluguUI-Regular.ttf",
@@ -237,6 +241,8 @@ fn sinhala_candidates() -> Vec<PathBuf> {
             .iter()
             .map(PathBuf::from)
             .collect()
+    } else if cfg!(target_os = "android") {
+        android_fonts(&["NotoSansSinhala-Regular.ttf", "NotoSansSinhalaUI-Regular.ttf"])
     } else {
         unix_fonts(&[
             "google-noto/NotoSansSinhalaUI-Regular.ttf",
@@ -263,6 +269,8 @@ fn tamil_candidates() -> Vec<PathBuf> {
         .iter()
         .map(PathBuf::from)
         .collect()
+    } else if cfg!(target_os = "android") {
+        android_fonts(&["NotoSansTamil-Regular.ttf", "NotoSansTamilUI-Regular.ttf"])
     } else {
         unix_fonts(&[
             "google-noto/NotoSansTamilUI-Regular.ttf",
@@ -288,6 +296,8 @@ fn hebrew_candidates() -> Vec<PathBuf> {
             .iter()
             .map(PathBuf::from)
             .collect()
+    } else if cfg!(target_os = "android") {
+        android_fonts(&["NotoSansHebrew-Regular.ttf"])
     } else {
         unix_fonts(&[
             "google-noto/NotoSansHebrew-Regular.ttf",
@@ -318,6 +328,8 @@ fn other_candidates() -> Vec<PathBuf> {
             .iter()
             .map(PathBuf::from)
             .collect()
+    } else if cfg!(target_os = "android") {
+        android_fonts(&["NotoNaskhArabic-Regular.ttf", "Roboto-Regular.ttf"])
     } else {
         unix_fonts(&[
             "truetype/noto/NotoSansArabic-Regular.ttf",
@@ -345,6 +357,13 @@ fn han_candidates(traditional: bool) -> Vec<PathBuf> {
             &["PingFang.ttc", "Hiragino Sans GB.ttc", "STHeiti Light.ttc", "STHeiti Medium.ttc"]
         };
         files.iter().map(|f| Path::new("/System/Library/Fonts").join(f)).collect()
+    } else if cfg!(target_os = "android") {
+        let files: &[&str] = if traditional {
+            &["NotoSansCJK-Regular.ttc", "NotoSansTC-Regular.otf", "DroidSansFallback.ttf"]
+        } else {
+            &["NotoSansCJK-Regular.ttc", "NotoSansSC-Regular.otf", "DroidSansFallback.ttf"]
+        };
+        android_fonts(files)
     } else {
         unix_fonts(&[
             "truetype/wqy/wqy-microhei.ttc",
@@ -371,6 +390,8 @@ fn hangul_candidates() -> Vec<PathBuf> {
             .iter()
             .map(PathBuf::from)
             .collect()
+    } else if cfg!(target_os = "android") {
+        android_fonts(&["NotoSansCJK-Regular.ttc", "NotoSansKR-Regular.otf", "DroidSansFallback.ttf"])
     } else {
         unix_fonts(&[
             "truetype/nanum/NanumGothic.ttf",
@@ -390,10 +411,16 @@ fn windows_fonts() -> PathBuf {
     dir.join("Fonts")
 }
 
+#[cfg_attr(not(target_os = "android"), allow(dead_code))]
+fn android_fonts(files: &[&str]) -> Vec<PathBuf> {
+    let dir = Path::new("/system/fonts");
+    files.iter().map(|f| dir.join(f)).collect()
+}
+
 fn unix_fonts(files: &'static [&'static str]) -> Vec<PathBuf> {
-    #[cfg(all(unix, not(target_os = "macos"), not(target_arch = "wasm32")))]
+    #[cfg(all(unix, not(target_os = "macos"), not(target_os = "android"), not(target_arch = "wasm32")))]
     static INSTALLED: OnceLock<Vec<PathBuf>> = OnceLock::new();
-    #[cfg(all(unix, not(target_os = "macos"), not(target_arch = "wasm32")))]
+    #[cfg(all(unix, not(target_os = "macos"), not(target_os = "android"), not(target_arch = "wasm32")))]
     // Read once per process, and not at all when installed fonts are turned off.
     let installed = INSTALLED
         .get_or_init(|| {
@@ -403,7 +430,7 @@ fn unix_fonts(files: &'static [&'static str]) -> Vec<PathBuf> {
             fontconfig::font_files(&fontconfig::config_path())
         })
         .as_slice();
-    #[cfg(not(all(unix, not(target_os = "macos"), not(target_arch = "wasm32"))))]
+    #[cfg(not(all(unix, not(target_os = "macos"), not(target_os = "android"), not(target_arch = "wasm32"))))]
     let installed: &[PathBuf] = &[];
     unix_candidates(files, installed)
 }
@@ -491,7 +518,7 @@ mod tests {
         for need in [Need::Other, Need::Hans, Need::Hant] {
             let list = candidates(need);
             assert!(!list.is_empty(), "{need:?}");
-            assert!(list.iter().all(|p| p.extension().is_some_and(|e| e == "ttf" || e == "ttc")), "{need:?}");
+            assert!(list.iter().all(|p| p.extension().is_some_and(|e| e == "ttf" || e == "ttc" || e == "otf")), "{need:?}");
         }
     }
 
